@@ -7,6 +7,13 @@ const server = express();
 // global middleware 
 server.use(express.json());  // built in middleware, no need to npm install it 
 
+// three amigas 
+server.use(function(req, res, next){
+  const today = new Date().toISOString(); // YYYY-MM-DD 
+  console.log(`[${today}] GET to URL `);
+  next(); 
+});
+
 server.use('/api/hubs', hubsRouter);
 
 server.get('/', (req, res) => {
