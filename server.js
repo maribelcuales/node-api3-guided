@@ -10,8 +10,7 @@ server.use(express.json());  // built in middleware, no need to npm install it
 // three amigas 
 server.use(function(req, res, next){
   const today = new Date().toISOString(); // YYYY-MM-DD 
-  const reqUrl = req.get('content-type')   
-  console.log(`[${today}] GET to {reqUrl}`);
+  console.log(`[${today}] ${req.method} to ${req.url}`);
   next(); 
 });
 
