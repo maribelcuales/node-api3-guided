@@ -38,7 +38,14 @@ server.get('/moria', gate, (req, res) => {
   res.status(200).json({ welcome: 'friends' });
 });
 
-server.get('/', (req, res) => {
+// before the request handler runs, have a middleware that makes your name available to display 
+function addMe(req, res, next) {
+  req.name = 'Luis';
+
+  next();
+}
+
+server.get('/', addMe, (req, res) => {
   const name = req.name || 'stranger'; 
   // const nameInsert = (req.name) ? ` ${req.name}` : '';
 
