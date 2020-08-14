@@ -9,6 +9,19 @@ server.use(express.json());  // built in middleware, no need to npm install it
 
 server.use('/api/hubs', gate, role('fellowship'), hubsRouter);
 
+function role(roleName) {
+
+  return function role(req, res, next) {
+    
+    let role = req.headers.role;
+  
+    if(role === roleName) {
+      next();
+    } else {
+      res.status(403).json({ you: 'have no power here' });
+    }
+  };
+};
 
 
 // three amigas 
