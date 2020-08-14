@@ -39,11 +39,12 @@ server.get('/moria', gate, (req, res) => {
 });
 
 server.get('/', (req, res) => {
-  const nameInsert = (req.name) ? ` ${req.name}` : '';
+  const name = req.name || 'stranger'; 
+  // const nameInsert = (req.name) ? ` ${req.name}` : '';
 
   res.send(`
     <h2>Lambda Hubs API</h2>
-    <p>Welcome${nameInsert} to the Lambda Hubs API</p>
+    <p>Welcome ${name} to the Lambda Hubs API</p>
     `);
 });
 
