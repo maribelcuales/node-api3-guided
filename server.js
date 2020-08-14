@@ -7,14 +7,23 @@ const server = express();
 // global middleware 
 server.use(express.json());  // built in middleware, no need to npm install it 
 
+server.use('/api/hubs', gate, role('fellowship'), hubsRouter);
+
+
+
 // three amigas 
 server.use(function(req, res, next){
   const today = new Date().toISOString(); // YYYY-MM-DD 
   console.log(`[${today}] ${req.method} to ${req.url}`);
+
   next(); 
 });
 
-server.use('/api/hubs', hubsRouter);
+// server.use(gate);
+
+server.get('/moria', gate, (req, res) => {
+  res.status(200).json({ welcome: 'friends' });
+});
 
 server.get('/', (req, res) => {
   const nameInsert = (req.name) ? ` ${req.name}` : '';
@@ -24,5 +33,28 @@ server.get('/', (req, res) => {
     <p>Welcome${nameInsert} to the Lambda Hubs API</p>
     `);
 });
+
+function gate(req, res, next) {
+  let password = req.headers.password;
+
+  if(password && typeof password === 'string') {
+    password = password.toLowerCase(); 
+   
+    if(password === 'mellon') {
+      next();
+    } else {
+      res.status(401).json({ you: 'cannot pass! '});
+    }
+  } else {
+    res.status(400).json({ message: 'speak friend and enter' });
+  }
+}
+/* 
+  check the headers to see if there is a password property 
+  if there is, check that it is 'mellon'
+    if it is, call next();
+    otherwise, return status 401 and { you: 'cannot pass' }
+  if there is no password, return status 400 and { message: 'speak friend and enter' }
+*/
 
 module.exports = server;
