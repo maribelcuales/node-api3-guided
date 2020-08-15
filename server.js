@@ -1,11 +1,13 @@
 const express = require('express'); // importing a CommonJS module
+const morgan = require('morgan'); 
 
 const hubsRouter = require('./hubs/hubs-router.js');
 
 const server = express();
 
 // global middleware 
-server.use(express.json());  // built in middleware, no need to npm install it 
+server.use(express.json());  // built in middleware, no need to npm install it
+server.use(morgan('dev'));  // third party   
 
 server.use('/api/hubs', gate, role('fellowship'), hubsRouter);
 
@@ -25,12 +27,12 @@ function role(roleName) {
 
 
 // three amigas 
-server.use(function(req, res, next){
-  const today = new Date().toISOString(); // YYYY-MM-DD 
-  console.log(`[${today}] ${req.method} to ${req.url}`);
+// server.use(function(req, res, next){
+//   const today = new Date().toISOString(); // YYYY-MM-DD 
+//   console.log(`[${today}] ${req.method} to ${req.url}`);
 
-  next(); 
-});
+//   next(); 
+// });
 
 // server.use(gate);
 
