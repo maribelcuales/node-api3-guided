@@ -7,7 +7,7 @@ const server = express();
 
 // global middleware 
 server.use(express.json());  // built in middleware, no need to npm install it
-server.use(morgan('dev'));  // third party   
+server.use(morgan('dev'));  // third party logger, must npm install this   
 
 server.use('/api/hubs', gate, role('fellowship'), hubsRouter);
 
