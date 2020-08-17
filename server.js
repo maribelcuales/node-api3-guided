@@ -1,5 +1,6 @@
 const express = require('express'); // importing a CommonJS module
 const morgan = require('morgan'); 
+const helmet = require('helmet');
 
 const hubsRouter = require('./hubs/hubs-router.js');
 
@@ -7,7 +8,8 @@ const server = express();
 
 // global middleware 
 server.use(express.json());  // built in middleware, no need to npm install it
-server.use(morgan('dev'));  // third party logger, must npm install this   
+server.use(morgan('combined'));  // third party logger, must npm install this   
+server.use(helmet()); 
 
 server.use('/api/hubs', gate, role('fellowship'), hubsRouter);
 
