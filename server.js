@@ -42,11 +42,15 @@ server.get('/moria', gate, (req, res) => {
   res.status(200).json({ welcome: 'friends' });
 });
 
+function errorHandler(error, req, res, next) {
+  res.status(500).json({ message: error.message }); 
+}
+
 // before the request handler runs, have a middleware that makes your name available to display 
 function addMe(req, res, next) {
   req.name = 'Luis';
 
-  next();
+  next(new Error('database error'));
 }
 
 server.get('/', addMe, (req, res) => {
@@ -81,5 +85,7 @@ function gate(req, res, next) {
     otherwise, return status 401 and { you: 'cannot pass' }
   if there is no password, return status 400 and { message: 'speak friend and enter' }
 */
+
+server.use(errorHandler); 
 
 module.exports = server;
